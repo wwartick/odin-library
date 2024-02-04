@@ -14,8 +14,8 @@
 
     <main>
         <div class="read-tracker">
-            <p>Books Read: 1</p>
-            <p>Books to Read: 1</p>
+            <p class="books-read">Books Read: 1</p>
+            <p class="books-to-read">Books to Read: 1</p>
         </div>
 
         <div class="card-container">
@@ -50,6 +50,20 @@
                  </div>
             </div>  
         </div>
+
+        <dialog>
+            <form>
+                <label for="title">Title of book</label><br>
+                <input type="text" id="title" name="title"><br><br>
+                <label for="author">Author of book</label><br>
+                <input type="text" id="author" name="author"><br><br>
+                <label for="pages">Pages of book</label><br>
+                <input type="number" id="pages" name="pages"><br><br>
+                <button class="modal-button cancel-button">Cancel</button>
+                <button class="modal-button submit-button">Submit</button>
+
+            </form>
+        </dialog>
 
         <button class="add-book-button"> Add Book </button>
 
