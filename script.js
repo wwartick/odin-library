@@ -4,12 +4,12 @@ const readButton = document.querySelectorAll('.change-read-status'); */
 const dialog = document.querySelector('dialog');
 const cancelBtn= dialog.querySelector('.cancel-button');
 const submitBtn = dialog.querySelector('.submit-button');
-const cardContainer = dialog.querySelector('.card-container');
+const cardContainer = document.querySelector('.card-container');
 let title = dialog.querySelector("#title");
 let author = dialog.querySelector("#author");
 let pages = dialog.querySelector("#pages");
 let readStatus = dialog.querySelector('#readStatus');
-const myLibrary =[];
+const myLibrary = JSON.parse(localStorage.getItem('books')) || [];
 
 function Book(title, author, pages, status, date) {
     this.title = title;
@@ -26,42 +26,47 @@ function removeCard(e) {
     console.log(e.target);
 }
 
-function generateCards(){
+function generateCards(book){
     const cardDiv= document.createElement('div');
     const titleSpan=document.createElement('span');
     const authorSpan=document.createElement('span');
     const pagesSpan=document.createElement('span');
     const dateSpan=document.createElement('span');
+    const btnContainer = document.createElement('div');
     const removeBtn = document.createElement('button');
     const readBtn = document.createElement('button');
 
-    myLibrary.forEach((book) =>{
-        
+    //set classnames and content for each of the card areas
+    cardDiv.className='card'
+    titleSpan.textContent = book.title;
+    titleSpan.className = 'title';
+    authorSpan.textContent = 'Written by: ' + book.author;
+    authorSpan.className = 'author';
+    pagesSpan.textContent = 'Pages: ' + book.pages;
+    pagesSpan.className = 'pages';
+    dateSpan.textContent = 'Added on ' + book.date;
+    dateSpan.className = 'date';
 
-        /* titleSpan.textContent = book.title;
-        titleSpan.className = 'title';
-        authorSpan.textContent = book.author;
-        authorSpan.className = 'author';
-        pagesSpan.textContent = book.pages;
-        pagesSpan.className = 'pages';
-        dateSpan.textContent = book.date;
-        dateSpan.className = 'date';
-        removeBtn.textContent = 'remove'
-        removeBtn.className = 'card-button remove'
-        readBtn.textContent = 'Read'
-        removeBtn.className = 'card-button change-read-status'
+    //set classnames and content for the two buttons at the bottom
+    btnContainer.className= 'card-button-container'
+    removeBtn.textContent = 'Remove'
+    removeBtn.className = 'card-button remove'
+    readBtn.textContent = 'Read'
+    readBtn.className = 'card-button change-read-status'
 
-        cardDiv.appendChild(titleSpan);
-        cardDiv.appendChild(pagesSpan);
-        cardDiv.appendChild(dateSpan);
-        cardDiv.appendChild(removeBtn);
-        cardDiv.appendChild(readBtn);
-        cardContainer.appendChild(cardDiv); */
-    })
+    //append info to card
+    cardDiv.appendChild(titleSpan);
+    cardDiv.appendChild(authorSpan)
+    cardDiv.appendChild(pagesSpan);
+    cardDiv.appendChild(dateSpan);
 
+    //append buttons to button div + button div to main container
+    btnContainer.appendChild(removeBtn);
+    btnContainer.appendChild(readBtn);
+    cardDiv.appendChild(btnContainer);
 
-   console.log(myLibrary);
-    
+    //appends it all to the main container
+    cardContainer.appendChild(cardDiv);
 }
 
 //gets the value from the form modal and creates a book with the inputs (if theyre inputted correctly)
@@ -77,14 +82,18 @@ function createBook(e){
     if(readStatus.checked === true ? bookStatus = true : bookStatus=false);
 
     //idk if this is actually necessary but it makes sure the form isnt empty? works though
-    if(title.value === '' || author.value === '' || pages.value === ''){
-       return;
+    if(title.value === '' || author.value === '' || pages.value === ''||pages.value > 9999){
+       return; 
     }   else{
-        myLibrary.push(new Book(bookTitle, bookAuthor, bookPages, bookStatus, bookDate));
+        e.preventDefault();
+        let submittedBook= new Book(bookTitle, bookAuthor, bookPages, bookStatus, bookDate);
+        myLibrary.push(submittedBook);
+        generateCards(submittedBook);
+        localStorage.setItem('books', JSON.stringify(myLibrary));
     }
     //creates the card
     e.preventDefault();
-    generateCards();
+/*     myLibrary.forEach((book) => generateCards(book)); */
     closeModal();
 }
 
@@ -95,7 +104,6 @@ function closeModal() {
     if(event.target.className == 'modal-button cancel-button'){
         event.preventDefault()
     }
-
     title.value ='';
     author.value ='';
     pages.value ='';
@@ -104,9 +112,11 @@ function closeModal() {
 }
 
 //event listeners
-/* readButton.forEach(button => button.addEventListener('click', changeReadStatus))
-removeButton.forEach(button => button.addEventListener('click', removeCard)) */
+
+//loads stored books on window open
+window.addEventListener('load', () => myLibrary.forEach((book) => generateCards(book)));
+//shows modal
 addBookButton.addEventListener('click', () => {dialog.showModal()});
+//handles modal buttons
 submitBtn.addEventListener('click', createBook)
-//closes the modal, clears the fields, doesn't send the data
 cancelBtn.addEventListener('click', closeModal)

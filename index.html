@@ -18,18 +18,7 @@
             <p class="books-to-read">Books to Read: 1</p>
         </div>
 
-        <div class="card-container">
-            <div class="card"> 
-                <span class="title">8888888888888888888888888888888888888888888888888888888888888888888888888888</span>
-                <span class="author">Author- 88888888888888888 88888888888888888888888888888888888888888888888 </span>
-                <span class="pages">Pages- 88888888888888888</span>
-                <span class="date">Date added- 8888888888888</span>
-                <div class="card-button-container">
-                    <button class="card-button remove">Remove</button>
-                    <button class="card-button change-read-status">Read</button>
-                 </div>
-            </div>
-        </div>
+        <div class="card-container"></div>
 
         <dialog>
             <form>
@@ -38,7 +27,7 @@
                 <label for="author">Author of book</label><br>
                 <input type="text" id="author" name="author" required minlength='1' maxlength="40" ><br><br>
                 <label for="pages">Pages of book</label><br>
-                <input type="number" id="pages" name="pages" required><br><br>
+                <input type="number" id="pages" name="pages" required min ="1" max="10000"><br><br>
                 <label for="readStatus">Check box if read</label>
                 <input type="checkbox" id="readStatus" name="readStatus"><br><br>
                 <button class="modal-button cancel-button">Cancel</button>

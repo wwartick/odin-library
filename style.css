@@ -101,12 +101,12 @@ footer{
     justify-content: flex-end;
     overflow: hidden;
     word-wrap: break-word;
+    text-decoration: underline;
 }
 
 .author, .pages, .date{
     color: #F1E4C3;
     font-size: 1em;
-    text-decoration: underline;
     max-height: 2.1em;
     width: 12em;
     overflow: hidden;
