@@ -40,8 +40,8 @@ footer{
     color: #F8FAE5;
     font-size: 1em;
     position: absolute;
-    right: 4vw;
-    bottom: 2vh;
+    right: 3em;
+    bottom: 1em;
     border: 2px solid #43766C;
 
 }
@@ -64,33 +64,32 @@ footer{
     display: flex;
     flex-wrap: wrap;
     gap: 2vw;
-    margin: 1vh 2vw;
-    padding: 1vh 2vw;
+    margin: 1em 1em;
+    padding: 1em 1em;
 }
 
-.card {
+.card{
     text-align: center;
     border: 3px solid #F1E4C3;
     border-radius: 3%;
     background-color: #597E52;
-    height: 34vh;
-    width: 22vw;
+    height: 20em;
+    width: 12em;
     display: flex;
     flex-direction: column;
-    gap: 2vh;
-    padding: 2vh 2vw;
-  }
-  
-  .title {
+    gap: 2em;
+    padding: 1em;
+}
 
-    font-size: 1.5em;
+.title{
+    color: #F1E4C3;
+    height: 4em;
+    font-size: 1.1em;
     font-weight: 800;
-    height:12vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 4; 
-    -webkit-box-orient: vertical;
-    
-    
-  }
+}
+
+
