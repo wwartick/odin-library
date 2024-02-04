@@ -1,0 +1,96 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    flex-direction: column;
+}
+
+header{
+    text-align: center;
+    padding: 0.5em;
+}
+
+main{
+    flex: 1;
+    position: relative;
+}
+
+footer{
+    text-align: center;
+    flex: 0;
+    padding: 0.5em;
+}
+
+.read-tracker{
+    display:flex; 
+    justify-content: space-around;
+}
+
+.add-book-button{
+    aspect-ratio: 1;
+    border-radius: 50%;
+    height: 4em;
+    border: none;
+    background-color: #43766C;
+    color: #F8FAE5;
+    font-size: 1em;
+    position: absolute;
+    right: 4vw;
+    bottom: 2vh;
+    border: 2px solid #43766C;
+
+}
+
+.add-book-button:hover{
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: scale(1.2);
+    border-color: #76453B;
+    
+}
+
+.add-book-button:active {
+    transform: scale(.95); 
+    border-color: white;
+    background-color: #43766c91;
+  }
+
+.card-container{
+    border: 1px solid red;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2vw;
+    margin: 1vh 2vw;
+    padding: 1vh 2vw;
+}
+
+.card {
+    text-align: center;
+    border: 3px solid #F1E4C3;
+    border-radius: 3%;
+    background-color: #597E52;
+    height: 34vh;
+    width: 22vw;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    padding: 2vh 2vw;
+  }
+  
+  .title {
+
+    font-size: 1.5em;
+    font-weight: 800;
+    height:12vh;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4; 
+    -webkit-box-orient: vertical;
+    
+    
+  }
