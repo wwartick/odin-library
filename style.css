@@ -142,3 +142,18 @@ footer{
     background-color: #cecbc58e;
 }
 
+dialog{
+    text-align: center;
+    margin: auto;
+    padding: 1.5em;
+    border-radius: 20%;
+}
+
+form > input{
+    width: 90%;
+}
+
+form > button {
+    width:45%
+    
+}

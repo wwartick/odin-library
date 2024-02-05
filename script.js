@@ -9,6 +9,7 @@ let pages = dialog.querySelector("#pages");
 let readStatus = dialog.querySelector('#readStatus');
 const myLibrary = JSON.parse(localStorage.getItem('books')) || [];
 
+//book constructor
 function Book(title, author, pages, status, date) {
     this.title = title;
     this.author = author;
@@ -17,27 +18,37 @@ function Book(title, author, pages, status, date) {
     this.date = date;
 }
 
+//event delegator for dynamically created cards
 function cardButtonHandler(e){
     //if the remove button is selected, this will find the index of the card
     //and remove it from the library array and local storage,
     //and then reload the page to delete the card
     if(e.target.className === 'card-button remove' ){
-        let indexRemoval = e.target.parentNode.parentNode.id;
-        myLibrary.splice(indexRemoval, 1);
+        let index = e.target.parentNode.parentNode.id;
+        myLibrary.splice(index, 1);
         localStorage.setItem('books', JSON.stringify(myLibrary));
         location.reload();
     }
 
+    //if read/not read button is pressed, it changes the background and text of
+    //the card. also gets the index of the selected card/book and changes the
+    //read status, and then sets it in local storage as well
     if(e.target.className === 'card-button change-read-status'){
-        let readStatus = e.target.parentNode.parentNode.className;
-        if (readStatus === 'card unread-book'){
-            e.target.parentNode.parentNode.className = 'card read-book'
+        let index = e.target.parentNode.parentNode.id;
+        if (e.target.parentNode.parentNode.className === 'card unread-book'){
+            e.target.parentNode.parentNode.className = 'card read-book';
+            e.target.textContent= 'Not read';
+            myLibrary[index].status = !myLibrary[index].status;
         } else {
-            e.target.parentNode.parentNode.className = 'card unread-book'
+            e.target.parentNode.parentNode.className = 'card unread-book';
+            e.target.textContent= 'Read';
+            myLibrary[index].status = !myLibrary[index].status;
         }
+        localStorage.setItem('books', JSON.stringify(myLibrary));
     }
-    
 }
+
+//creates card based on form input
 function generateCards(book){
     //create all the necessary elements with these vars
     const cardDiv= document.createElement('div');
@@ -68,7 +79,7 @@ function generateCards(book){
     btnContainer.className= 'card-button-container'
     removeBtn.textContent = 'Remove'
     removeBtn.className = 'card-button remove'
-    readBtn.textContent = 'Read'
+    if(book.status ? readBtn.textContent = 'Not read' : readBtn.textContent = 'Read')
     readBtn.className = 'card-button change-read-status'
 
     //append info to card
@@ -102,15 +113,13 @@ function createBook(e){
     if(title.value === '' || author.value === '' || pages.value === ''||pages.value > 9999){
        return; 
     }   else{
+        //creates the card
         e.preventDefault();
         let submittedBook= new Book(bookTitle, bookAuthor, bookPages, bookStatus, bookDate);
         myLibrary.push(submittedBook);
         generateCards(submittedBook);
         localStorage.setItem('books', JSON.stringify(myLibrary));
     }
-    //creates the card
-    e.preventDefault();
-/*     myLibrary.forEach((book) => generateCards(book)); */
     closeModal();
 }
 
