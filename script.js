@@ -1,6 +1,4 @@
 const addBookButton = document.querySelector('.add-book-button');
-/* const removeButton = document.querySelectorAll('.remove');
-const readButton = document.querySelectorAll('.change-read-status'); */
 const dialog = document.querySelector('dialog');
 const cancelBtn= dialog.querySelector('.cancel-button');
 const submitBtn = dialog.querySelector('.submit-button');
@@ -19,14 +17,29 @@ function Book(title, author, pages, status, date) {
     this.date = date;
 }
 
-function changeReadStatus(e) {
-    console.log(e.target);
-}
-function removeCard(e) {
-    console.log(e.target);
-}
+function cardButtonHandler(e){
+    //if the remove button is selected, this will find the index of the card
+    //and remove it from the library array and local storage,
+    //and then reload the page to delete the card
+    if(e.target.className === 'card-button remove' ){
+        let indexRemoval = e.target.parentNode.parentNode.id;
+        myLibrary.splice(indexRemoval, 1);
+        localStorage.setItem('books', JSON.stringify(myLibrary));
+        location.reload();
+    }
 
+    if(e.target.className === 'card-button change-read-status'){
+        let readStatus = e.target.parentNode.parentNode.className;
+        if (readStatus === 'card unread-book'){
+            e.target.parentNode.parentNode.className = 'card read-book'
+        } else {
+            e.target.parentNode.parentNode.className = 'card unread-book'
+        }
+    }
+    
+}
 function generateCards(book){
+    //create all the necessary elements with these vars
     const cardDiv= document.createElement('div');
     const titleSpan=document.createElement('span');
     const authorSpan=document.createElement('span');
@@ -38,6 +51,8 @@ function generateCards(book){
 
     //set classnames and content for each of the card areas
     cardDiv.className='card'
+    cardDiv.id=myLibrary.indexOf(book)
+    if(book.status ? cardDiv.classList.add('read-book') : cardDiv.classList.add('unread-book'));
     titleSpan.textContent = book.title;
     titleSpan.className = 'title';
     authorSpan.textContent = 'Written by: ' + book.author;
@@ -46,6 +61,8 @@ function generateCards(book){
     pagesSpan.className = 'pages';
     dateSpan.textContent = 'Added on ' + book.date;
     dateSpan.className = 'date';
+
+
 
     //set classnames and content for the two buttons at the bottom
     btnContainer.className= 'card-button-container'
@@ -117,6 +134,7 @@ function closeModal() {
 window.addEventListener('load', () => myLibrary.forEach((book) => generateCards(book)));
 //shows modal
 addBookButton.addEventListener('click', () => {dialog.showModal()});
+cardContainer.addEventListener('click', cardButtonHandler)
 //handles modal buttons
 submitBtn.addEventListener('click', createBook)
 cancelBtn.addEventListener('click', closeModal)

@@ -91,6 +91,14 @@ footer{
     padding: 1em;
 }
 
+.read-book{
+    background-color: #597E52;
+}
+
+.unread-book{
+    background-color: #76453B;
+}
+
 .title{
     color: #F1E4C3;
     height: 4.5em;
