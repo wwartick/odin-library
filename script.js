@@ -110,7 +110,7 @@ function createBook(e){
     if(readStatus.checked === true ? bookStatus = true : bookStatus=false);
 
     //idk if this is actually necessary but it makes sure the form isnt empty? works though
-    if(title.value === '' || author.value === '' || pages.value === ''||pages.value > 9999){
+    if(title.value === '' || author.value === '' || pages.value === ''||pages.value >= 10000){
        return; 
     }   else{
         //creates the card
