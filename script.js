@@ -2,20 +2,17 @@ const addBookButton = document.querySelector('.add-book-button');
 const dialog = document.querySelector('dialog');
 const cancelBtn= dialog.querySelector('.cancel-button');
 const submitBtn = dialog.querySelector('.submit-button');
-const cardContainer = document.querySelector('.card-container');
-let title = dialog.querySelector("#title");
-let author = dialog.querySelector("#author");
-let pages = dialog.querySelector("#pages");
-let readStatus = dialog.querySelector('#readStatus');
 const myLibrary = JSON.parse(localStorage.getItem('books')) || [];
 
 //book constructor
-function Book(title, author, pages, status, date) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages; 
-    this.status = status;
-    this.date = date;
+class Book{
+    constructor(title, author, pages, bookStatus, bookDate){
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.bookStatus = bookStatus;
+        this.bookDate = bookDate;
+    }
 }
 
 //event delegator for dynamically created cards
@@ -38,11 +35,11 @@ function cardButtonHandler(e){
         if (e.target.parentNode.parentNode.className === 'card unread-book'){
             e.target.parentNode.parentNode.className = 'card read-book';
             e.target.textContent= 'Not read';
-            myLibrary[index].status = !myLibrary[index].status;
+            myLibrary[index].bookStatus = !myLibrary[index].bookStatus;
         } else {
             e.target.parentNode.parentNode.className = 'card unread-book';
             e.target.textContent= 'Read';
-            myLibrary[index].status = !myLibrary[index].status;
+            myLibrary[index].bookStatus = !myLibrary[index].bookStatus;
         }
         localStorage.setItem('books', JSON.stringify(myLibrary));
     }
@@ -51,6 +48,7 @@ function cardButtonHandler(e){
 //creates card based on form input
 function generateCards(book){
     //create all the necessary elements with these vars
+    const cardContainer = document.querySelector('.card-container');
     const cardDiv= document.createElement('div');
     const titleSpan=document.createElement('span');
     const authorSpan=document.createElement('span');
@@ -63,14 +61,14 @@ function generateCards(book){
     //set classnames and content for each of the card areas
     cardDiv.className='card'
     cardDiv.id=myLibrary.indexOf(book)
-    if(book.status ? cardDiv.classList.add('read-book') : cardDiv.classList.add('unread-book'));
+    if(book.bookStatus ? cardDiv.classList.add('read-book') : cardDiv.classList.add('unread-book'));
     titleSpan.textContent = book.title;
     titleSpan.className = 'title';
     authorSpan.textContent = 'Written by: ' + book.author;
     authorSpan.className = 'author';
     pagesSpan.textContent = 'Pages: ' + book.pages;
     pagesSpan.className = 'pages';
-    dateSpan.textContent = 'Added on ' + book.date;
+    dateSpan.textContent = 'Added on ' + book.bookDate;
     dateSpan.className = 'date';
 
 
@@ -79,7 +77,7 @@ function generateCards(book){
     btnContainer.className= 'card-button-container'
     removeBtn.textContent = 'Remove'
     removeBtn.className = 'card-button remove'
-    if(book.status ? readBtn.textContent = 'Not read' : readBtn.textContent = 'Read')
+    if(book.bookStatus ? readBtn.textContent = 'Not read' : readBtn.textContent = 'Read')
     readBtn.className = 'card-button change-read-status'
 
     //append info to card
@@ -99,15 +97,15 @@ function generateCards(book){
 
 //gets the value from the form modal and creates a book with the inputs (if theyre inputted correctly)
 function createBook(e){
-    let bookTitle= title.value;
-    let bookAuthor = author.value;
-    let bookPages= pages.value;
-    let bookStatus; 
+    let title = dialog.querySelector("#title");
+    let author = dialog.querySelector("#author");
+    let pages = dialog.querySelector("#pages");
+    let readStatus = dialog.querySelector('#readStatus');
     //gets current date on book creation
     let bookDate = new Date().toLocaleDateString();
-    
+
     //sets true/false for if a book is read depending on checkbox status
-    if(readStatus.checked === true ? bookStatus = true : bookStatus=false);
+    if(readStatus.checked === true ? readStatus.value = true : readStatus.value=false);
 
     //idk if this is actually necessary but it makes sure the form isnt empty? works though
     if(title.value === '' || author.value === '' || pages.value === ''||pages.value > 10000){
@@ -115,7 +113,7 @@ function createBook(e){
     }   else{
         //creates the card
         e.preventDefault();
-        let submittedBook= new Book(bookTitle, bookAuthor, bookPages, bookStatus, bookDate);
+        let submittedBook= new Book(title.value, author.value, pages.value, readStatus.value, bookDate);
         myLibrary.push(submittedBook);
         generateCards(submittedBook);
         localStorage.setItem('books', JSON.stringify(myLibrary));
@@ -139,8 +137,7 @@ function closeModal() {
 
 //event listeners
 
-//loads stored books on window open
-window.addEventListener('load', () => myLibrary.forEach((book) => generateCards(book)));
+myLibrary.forEach((book) => generateCards(book));
 //shows modal
 addBookButton.addEventListener('click', () => {dialog.showModal()});
 cardContainer.addEventListener('click', cardButtonHandler)
