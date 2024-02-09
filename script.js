@@ -2,6 +2,7 @@ const addBookButton = document.querySelector('.add-book-button');
 const dialog = document.querySelector('dialog');
 const cancelBtn= dialog.querySelector('.cancel-button');
 const submitBtn = dialog.querySelector('.submit-button');
+const cardContainer = document.querySelector('.card-container');
 const myLibrary = JSON.parse(localStorage.getItem('books')) || [];
 
 //book constructor
@@ -70,27 +71,21 @@ function generateCards(book){
     pagesSpan.className = 'pages';
     dateSpan.textContent = 'Added on ' + book.bookDate;
     dateSpan.className = 'date';
-
-
-
     //set classnames and content for the two buttons at the bottom
     btnContainer.className= 'card-button-container'
     removeBtn.textContent = 'Remove'
     removeBtn.className = 'card-button remove'
     if(book.bookStatus ? readBtn.textContent = 'Not read' : readBtn.textContent = 'Read')
     readBtn.className = 'card-button change-read-status'
-
     //append info to card
     cardDiv.appendChild(titleSpan);
     cardDiv.appendChild(authorSpan)
     cardDiv.appendChild(pagesSpan);
     cardDiv.appendChild(dateSpan);
-
     //append buttons to button div + button div to main container
     btnContainer.appendChild(removeBtn);
     btnContainer.appendChild(readBtn);
     cardDiv.appendChild(btnContainer);
-
     //appends it all to the main container
     cardContainer.appendChild(cardDiv);
 }
@@ -103,11 +98,9 @@ function createBook(e){
     let readStatus = dialog.querySelector('#readStatus');
     //gets current date on book creation
     let bookDate = new Date().toLocaleDateString();
-
     //sets true/false for if a book is read depending on checkbox status
     if(readStatus.checked === true ? readStatus.value = true : readStatus.value=false);
-
-    //idk if this is actually necessary but it makes sure the form isnt empty? works though
+    // validates that the form isnt empty and page value is correct
     if(title.value === '' || author.value === '' || pages.value === ''||pages.value > 10000){
        return; 
     }   else{
@@ -135,9 +128,9 @@ function closeModal() {
     dialog.close();
 }
 
-//event listeners
-
+//on page load, generates cards for books
 myLibrary.forEach((book) => generateCards(book));
+//event listeners
 //shows modal
 addBookButton.addEventListener('click', () => {dialog.showModal()});
 cardContainer.addEventListener('click', cardButtonHandler)
